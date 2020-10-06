@@ -1,0 +1,12 @@
+// Set flags, alphabetic order
+// Advanced.AutoFormatting=false;
+Advanced.EnableModelManagement=true;
+// Advanced.DefaultStoreAsOneFile=false;
+// Advanced.PedanticModelica=true;
+// Hidden.PrintFailureToDifferentiate=true;
+// Advanced.SparseActivate=true;
+OutputCPUtime=true;
+
+openModel("./BuildingSystems/BuildingSystems/package.mo")
+openModel("../../BuildingSystems/netCDF-DataReader/NcDataReader2/package.mo");
+openModel("../../../CoolingSystems/package.mo");
