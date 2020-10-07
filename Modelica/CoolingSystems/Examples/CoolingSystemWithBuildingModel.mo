@@ -1,5 +1,5 @@
 within CoolingSystems.Examples;
-model CoolingSystem
+model CoolingSystemWithBuildingModel
   "Simplified model of a building energy supply system based on a compression chiller"
   extends Modelica.Icons.Example;
   package Medium1 = BuildingSystems.Media.Water;
@@ -72,13 +72,13 @@ model CoolingSystem
   BuildingSystems.Fluid.Sources.Boundary_pT sin2(
     redeclare package Medium =Medium2, nPorts=1)
     annotation (Placement(transformation(extent={{-4,-4},{4,4}}, origin={74,6})));
-  Modelica.Blocks.Sources.Constant TSetRet(k=273.15 + 25.0)
+  Modelica.Blocks.Sources.Constant TSetRet(k=273.15 + 20.0)
     annotation (Placement(transformation(extent={{130,2},{126,6}})));
-    CoolingSystems.HeatStorage cooSto(
-    Q(start=0),
+    CoolingSystems.ColdStorage cooSto(
     V=2.0,
     TMax=291.15,
-    TMin=285.15)
+    TMin=285.15,
+    chargeLevel_start=0.5)
     annotation (Placement(transformation(extent={{2,-10},{22,10}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow source
     annotation (Placement(transformation(extent={{42,-10},{22,10}})));
@@ -102,6 +102,8 @@ model CoolingSystem
     annotation (Placement(transformation(extent={{102,-10},{82,10}})));
   Modelica.Blocks.Sources.Constant partLoad(k=0.5)
     annotation (Placement(transformation(extent={{102,30},{98,34}})));
+  Modelica.Blocks.Logical.Not not1
+    annotation (Placement(transformation(extent={{48,44},{60,56}})));
 equation
    connect(ambience.toSurfacePorts, building.toAmbienceSurfacesPorts) annotation (Line(
     points={{-75,30},{-63,30}},
@@ -159,10 +161,12 @@ equation
     annotation (Line(points={{97.8,32},{92,32},{92,7.6}}, color={0,0,127}));
   connect(building.Q_flow_cooling[1], gain1.u)
     annotation (Line(points={{-63,15},{-63,0},{-34.8,0}}, color={0,0,127}));
-  connect(hysteresis.y, chi.on) annotation (Line(points={{28.6,20},{36,20},{36,12},
-          {96,12},{96,7.6}}, color={255,0,255}));
+  connect(hysteresis.y, not1.u) annotation (Line(points={{28.6,20},{38,20},{38,50},
+          {46.8,50}}, color={255,0,255}));
+  connect(not1.y, chi.on)
+    annotation (Line(points={{60.6,50},{96,50},{96,7.6}}, color={255,0,255}));
 
-  annotation(experiment(StopTime=864000),
+  annotation(experiment(StopTime=31536000),
     __Dymola_Commands(file="modelica://WaveSave/Resources/Scripts/Dymola/AbstractSystems/HeatPumpSystem.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{140,100}})),
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-40},{100,40}})),
@@ -175,9 +179,9 @@ equation
   revisions="<html>
   <ul>
   <li>
-  April 25, 2017, by Christoph Nytsch-Geusen:<br/>
+  October 07, 2020, by Christoph Nytsch-Geusen:<br/>
   First implementation.
   </li>
   </ul>
   </html>"));
-end CoolingSystem;
+end CoolingSystemWithBuildingModel;

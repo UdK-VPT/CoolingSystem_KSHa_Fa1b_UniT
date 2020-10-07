@@ -1,10 +1,10 @@
 within CoolingSystems;
-model HeatStorage
+model ColdStorage
   parameter Modelica.SIunits.Volume V
     "Fluid volume";
-  parameter Modelica.SIunits.Temp_K TMax = 273.15 + 60.0
+  parameter Modelica.SIunits.Temp_K TMax = 273.15 + 20.0
     "Maximal fluid temperature";
-  parameter Modelica.SIunits.Temp_K TMin = 273.15 + 20.0
+  parameter Modelica.SIunits.Temp_K TMin = 273.15 + 10.0
     "Minimal fluid temperature";
   parameter Real chargeLevel_start = 0.0
     "Start charge level";
@@ -23,7 +23,7 @@ model HeatStorage
       iconTransformation(extent={{-10,-10},{10,10}},rotation=90,origin={0,80})));
 protected
   parameter Modelica.SIunits.Energy Q_nominal =
-    BuildingSystems.Utilities.Psychrometrics.Constants.cpWatLiq * V * rhoWat * (TMax - TMin)
+    BuildingSystems.Utilities.Psychrometrics.Constants.cpWatLiq * V * rhoWat * (TMin - TMax)
     "Nominal energy capacity";
 equation
   port_a1.T = TMin;
@@ -34,4 +34,4 @@ equation
   annotation (Icon(graphics={Rectangle(extent={{-40,80},{40,-80}},
     lineColor={28,108,200},fillColor={238,46,47},fillPattern=FillPattern.HorizontalCylinder),
     Text(extent={{-34,-76},{34,-102}}, lineColor={0,0,255},textString="%name")}));
-end HeatStorage;
+end ColdStorage;

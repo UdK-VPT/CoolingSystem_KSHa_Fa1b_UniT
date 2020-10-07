@@ -90,7 +90,6 @@ model HeatPumpSystem
   Modelica.Blocks.Sources.Constant TSetRet(k=273.15 + 25.0)
     annotation (Placement(transformation(extent={{130,2},{126,6}})));
     CoolingSystems.HeatStorage heaSto(
-    Q(start=0),
     V=2.0,
     TMax=308.15,
     TMin=298.15)
