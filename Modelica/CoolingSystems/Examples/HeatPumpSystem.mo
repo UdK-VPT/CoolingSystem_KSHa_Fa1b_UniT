@@ -41,7 +41,8 @@ model HeatPumpSystem
   Modelica.Blocks.Sources.Constant airchange(
     k=0.5)
     annotation (Placement(transformation(extent={{-2,-2},{2,2}},rotation=180,origin={-38,26})));
-  Modelica.Blocks.Sources.Constant TSetSup(k=273.15 + 35.0)
+  Modelica.Blocks.Sources.Constant TSetSup(
+    k=273.15 + 35.0)
     annotation (Placement(transformation(extent={{112,18},{108,22}})));
   BuildingSystems.Fluid.HeatPumps.Carnot_TCon heaPum(
     redeclare package Medium1 = Medium1,
@@ -55,8 +56,9 @@ model HeatPumpSystem
     TCon_nominal=308.15,
     TEva_nominal=275.15)
     annotation (Placement(transformation(extent={{100,-10},{80,10}})));
-  BuildingSystems.Fluid.Sources.Boundary_pT sin1(
-    redeclare package Medium =Medium2, nPorts=1)
+  BuildingSystems.Fluid.Sources.Boundary_pT bou1(
+    redeclare package Medium=Medium2,
+    nPorts=1)
     annotation (Placement(transformation(extent={{4,-4},{-4,4}}, origin={110,-6})));
   BuildingSystems.Fluid.Sources.MassFlowSource_T sou1(
     redeclare package Medium = Medium2,
@@ -65,16 +67,11 @@ model HeatPumpSystem
     T=291.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{114,-20},{106,-12}})));
-  Modelica.Blocks.Sources.Constant TAirSetCooling(k=273.15 + 26.0) annotation (
-      Placement(transformation(
-        extent={{-2,-2},{2,2}},
-        rotation=180,
-        origin={-32,30})));
-  Modelica.Blocks.Sources.Constant TAirSetHeating(k=273.15 + 20.0) annotation (
-      Placement(transformation(
-        extent={{-2,-2},{2,2}},
-        rotation=180,
-        origin={-26,36})));
+  Modelica.Blocks.Sources.Constant TAirSetCooling(k=273.15 + 26.0)
+    annotation (Placement(transformation(extent={{-2,-2},{2,2}},rotation=180,origin={-32,30})));
+  Modelica.Blocks.Sources.Constant TAirSetHeating(
+    k=273.15 + 20.0)
+    annotation (Placement(transformation(extent={{-2,-2},{2,2}},rotation=180,origin={-26,36})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow load
     annotation (Placement(transformation(extent={{-18,-10},{2,10}})));
   BuildingSystems.Fluid.Sources.MassFlowSource_T sou2(
@@ -83,11 +80,12 @@ model HeatPumpSystem
     nPorts=1,
     use_m_flow_in=true)
     annotation (Placement(transformation(extent={{114,2},{106,10}})));
-  BuildingSystems.Fluid.Sources.Boundary_pT sin2(
+  BuildingSystems.Fluid.Sources.Boundary_pT bou2(
     redeclare package Medium =Medium1,
     nPorts=1)
     annotation (Placement(transformation(extent={{-4,-4},{4,4}}, origin={72,6})));
-  Modelica.Blocks.Sources.Constant TSetRet(k=273.15 + 25.0)
+  Modelica.Blocks.Sources.Constant TSetRet(
+    k=273.15 + 25.0)
     annotation (Placement(transformation(extent={{130,2},{126,6}})));
     CoolingSystems.HeatStorage heaSto(
     V=2.0,
@@ -97,11 +95,15 @@ model HeatPumpSystem
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow source
     annotation (Placement(transformation(extent={{42,-10},{22,10}})));
   Modelica.Blocks.Math.Gain gain1(
-                                 k=-1)
+    k=-1)
     annotation (Placement(transformation(extent={{-34,-4},{-26,4}})));
-  Modelica.Blocks.Math.BooleanToReal booleanToReal(realTrue=0.0, realFalse=0.7)
+  Modelica.Blocks.Math.BooleanToReal booleanToReal(
+    realTrue=0.0,
+    realFalse=0.7)
     annotation (Placement(transformation(extent={{34,14},{46,26}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=0.2, uHigh=1.0)
+  Modelica.Blocks.Logical.Hysteresis hysteresis(
+    uLow=0.2,
+    uHigh=1.0)
     annotation (Placement(transformation(extent={{16,14},{28,26}})));
 equation
    connect(ambience.toSurfacePorts, building.toAmbienceSurfacesPorts) annotation (Line(
@@ -124,14 +126,13 @@ equation
       points={{-44.2,30},{-42,30},{-42,26},{-40.2,26}},
       color={0,0,127},
       smooth=Smooth.None));
-
   connect(TSetSup.y, heaPum.TSet)
     annotation (Line(points={{107.8,20},{102,20},{102,9}},  color={0,0,127}));
   connect(building.T_setCooling[1], TAirSetCooling.y) annotation (Line(points={{-44.2,
           32},{-40,32},{-40,30},{-34.2,30}},       color={0,0,127}));
   connect(building.T_setHeating[1], TAirSetHeating.y) annotation (Line(points={{-44.2,
           34},{-36,34},{-36,36},{-28.2,36}},      color={0,0,127}));
-  connect(sin2.ports[1], heaPum.port_b1)
+  connect(bou2.ports[1], heaPum.port_b1)
     annotation (Line(points={{76,6},{78,6},{80,6}},    color={0,127,255}));
   connect(load.port, heaSto.port_a1)
     annotation (Line(points={{2,0},{2,0},{8,0}}, color={191,0,0}));
@@ -150,7 +151,7 @@ equation
     annotation (Line(points={{-25.6,0},{-25.6,0},{-18,0}}, color={0,0,127}));
   connect(heaPum.QCon_flow, source.Q_flow) annotation (Line(points={{79,9},{79,16},
           {50,16},{50,0},{42,0}}, color={0,0,127}));
-  connect(heaPum.port_b2, sin1.ports[1])
+  connect(heaPum.port_b2, bou1.ports[1])
     annotation (Line(points={{100,-6},{103,-6},{106,-6}}, color={0,127,255}));
   connect(sou1.ports[1], heaPum.port_a2) annotation (Line(points={{106,-16},{90,
           -16},{74,-16},{74,-6},{80,-6}}, color={0,127,255}));
@@ -163,21 +164,21 @@ equation
     annotation (Line(points={{14.8,20},{12,20},{12,8}}, color={0,0,127}));
 
   annotation(experiment(StartTime=0, StopTime=31536000),
-    __Dymola_Commands(file="modelica://WaveSave/Resources/Scripts/Dymola/AbstractSystems/HeatPumpSystem.mos" "Simulate and plot"),
+    __Dymola_Commands(file="modelica://CoolingSystems/Resources/Scripts/Dymola/Examples/HeatPumpSystem.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{140,100}})),
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-40},{100,40}})),
-  Documentation(info="<html>
-  <p>
-  Example that simulates a energy system based on an air / water heat pump and
-  a thermal storage.
-  </p>
-  </html>",
-  revisions="<html>
-  <ul>
-  <li>
-  April 25, 2017, by Christoph Nytsch-Geusen:<br/>
-  First implementation.
-  </li>
-  </ul>
-  </html>"));
+Documentation(info="<html>
+<p>
+Example that simulates a energy system based on an air / water heat pump and
+a thermal storage.
+</p>
+</html>",
+revisions="<html>
+<ul>
+<li>
+April 25, 2017, by Christoph Nytsch-Geusen:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
 end HeatPumpSystem;
